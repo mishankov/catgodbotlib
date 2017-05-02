@@ -21,28 +21,21 @@ class Bot:
     def get_me(self):
         return requests.post(URL + self.token + '/getMe')
 
-    def get_updates(self, **kwargs):
-        offset = kwargs.get('offset', '')
-        limit = kwargs.get('limit', 100)
-        timeout = kwargs.get('timeout', 0)
-        allowed_updates = kwargs.get('allowed_updates', [])
-
-        if len(allowed_updates) > 0:
-            allowed_updates_str = '["' + '", "'.join(allowed_updates) + '"]'
-        else:
+    def get_updates(self, offset='', limit=100, timeout=0, allowed_updates=''):
+        if allowed_updates == '':
             allowed_updates_str = '[]'
+        else:
+            allowed_updates_str = '["' + '", "'.join(allowed_updates) + '"]'
 
         return requests.post(URL + self.token + '/getUpdates?offset=' + str(offset) +
                              '&limit=' + str(limit) +
                              '&timeout=' + str(timeout) +
                              '&allowed_updates=' + allowed_updates_str)
 
-    def send_message(self, chat_id, text, **kwargs):
-        parse_mode = kwargs.get('parse_mode', self.default_parse_mode)
-        disable_web_page_preview = kwargs.get('disable_web_page_preview', 'False')
-        disable_notification = kwargs.get('disable_notification', 'False')
-        reply_to_message_id = kwargs.get('reply_to_message_id', '')
-        reply_markup = kwargs.get('reply_markup', '')
+    def send_message(self, chat_id, text, parse_mode=None, disable_web_page_preview=False, disable_notification=False,
+                     reply_to_message_id='', reply_markup=''):
+        if parse_mode is None:
+            parse_mode = self.default_parse_mode
 
         return requests.post(URL + self.token +
                              '/sendMessage?chat_id=' + str(chat_id) +
