@@ -1,17 +1,36 @@
-import user
+from user import User
+
 
 class MessageEntity:
-    def __init__(self, json):
-        self.type = json['type']
-        self.offset = json['offset']
-        self.length = json['length']
+    def __init__(self, type, offset, length, url=None, user=None):
+        self.type = type
+        self.offset = offset
+        self.length = length
+
+        if url is None:
+            self.url = ''
+        else:
+            self.url = url
+
+        if user is None:
+            self.user = ''
+        else:
+            self.user = user
+
+    @classmethod
+    def from_json(cls, json):
+        type = json['type']
+        offset = json['offset']
+        length = json['length']
 
         if 'url' in json.keys():
-            self.url = json['url']
+            url = json['url']
         else:
-            self.url = ''
+            url = None
 
         if 'user' in json.keys():
-            self.user = user.User(json['user'])
+            user = User(json['user'])
         else:
-            self.user = ''
+            user = None
+
+        return cls(type, offset, length, url, user)

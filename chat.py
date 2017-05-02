@@ -1,29 +1,62 @@
 class Chat:
-    def __init__(self, json):
-        self.id = json['id']
-        self.type = json['type']
+    def __init__(self, id, type, title=None, username=None, first_name=None, last_name=None,
+                 all_members_are_administrators=None):
+        self.id = id
+        self.type = type
+
+        if 'title' is None:
+            self.title = ''
+        else:
+            self.title = title
+
+        if 'username' is None:
+            self.username = ''
+        else:
+            self.username = username
+
+        if 'first_name' is None:
+            self.first_name = ''
+        else:
+            self.first_name = first_name
+
+        if 'last_name' is None:
+            self.last_name = ''
+        else:
+            self.last_name = last_name
+
+        if 'all_members_are_administrators' is None:
+            self.all_members_are_administrators = ''
+        else:
+            self.all_members_are_administrators = all_members_are_administrators
+
+    @classmethod
+    def from_json(cls, json):
+        id = json['id']
+        type = json['type']
 
         if 'title' in json.keys():
-            self.title = json['title']
+            title = json['title']
         else:
-            self.title = ''
+            title = ''
 
         if 'username' in json.keys():
-            self.username = json['username']
+            username = json['username']
         else:
-            self.username = ''
+            username = ''
 
         if 'first_name' in json.keys():
-            self.first_name = json['first_name']
+            first_name = json['first_name']
         else:
-            self.first_name = ''
+            first_name = ''
 
         if 'last_name' in json.keys():
-            self.last_name = json['last_name']
+            last_name = json['last_name']
         else:
-            self.last_name = ''
+            last_name = ''
 
         if 'all_members_are_administrators' in json.keys():
-            self.all_members_are_administrators = json['all_members_are_administrators']
+            all_members_are_administrators = json['all_members_are_administrators']
         else:
-            self.all_members_are_administrators = ''
+            all_members_are_administrators = ''
+
+        return cls(id, type, title, username, first_name, last_name, all_members_are_administrators)
