@@ -1,6 +1,7 @@
 # _*_ coding: utf-8 _*_
 import requests
 from constants import *
+import telegramdatamodel
 
 
 class Bot:
@@ -19,7 +20,7 @@ class Bot:
         self.default_parse_mode = name
 
     def get_me(self):
-        return requests.post(URL + self.token + '/getMe')
+        return requests.post(URL + self.token + '/getMe').json()
 
     def get_updates(self, offset='', limit=100, timeout=0, allowed_updates=''):
         if allowed_updates == '':
@@ -30,7 +31,7 @@ class Bot:
         return requests.post(URL + self.token + '/getUpdates?offset=' + str(offset) +
                              '&limit=' + str(limit) +
                              '&timeout=' + str(timeout) +
-                             '&allowed_updates=' + allowed_updates_str)
+                             '&allowed_updates=' + allowed_updates_str).json()
 
     def send_message(self, chat_id, text, parse_mode=None, disable_web_page_preview=False, disable_notification=False,
                      reply_to_message_id='', reply_markup=''):
@@ -44,4 +45,4 @@ class Bot:
                              '&disable_web_page_preview=' + str(disable_web_page_preview) +
                              '&disable_notification=' + str(disable_notification) +
                              '&reply_to_message_id=' + str(reply_to_message_id) +
-                             '&reply_markup=' + str(reply_markup))
+                             '&reply_markup=' + str(reply_markup)).json()
