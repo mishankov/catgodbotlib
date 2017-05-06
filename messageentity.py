@@ -29,7 +29,7 @@ class MessageEntity:
             url = None
 
         if 'user' in json.keys():
-            user = User(json['user'])
+            user = User.from_json(json['user'])
         else:
             user = None
 
