@@ -1,7 +1,7 @@
 # _*_ coding: utf-8 _*_
 import requests
 from constants import *
-import telegramdatamodel
+import telegramdatamodel as dm
 
 
 class Bot:
@@ -23,15 +23,34 @@ class Bot:
         return requests.post(URL + self.token + '/getMe').json()
 
     def get_updates(self, offset='', limit=100, timeout=0, allowed_updates=''):
+        """
+        Use this method to receive incoming updates
+        :param offset: 
+        :param limit: 
+        :param timeout: 
+        :param allowed_updates: 
+        :return: list of Update objects or False, if no updates
+        """
         if allowed_updates == '':
             allowed_updates_str = '[]'
         else:
             allowed_updates_str = '["' + '", "'.join(allowed_updates) + '"]'
 
-        return requests.post(URL + self.token + '/getUpdates?offset=' + str(offset) +
+        json = requests.post(URL + self.token + '/getUpdates?offset=' + str(offset) +
                              '&limit=' + str(limit) +
                              '&timeout=' + str(timeout) +
                              '&allowed_updates=' + allowed_updates_str).json()
+
+        if json['ok'] is True:
+            json_list = json['result']
+        else:
+            return False
+
+        update_list = []
+        for update in json_list:
+            update_list.append(dm.Update.from_json(update))
+
+        return update_list
 
     def send_message(self, chat_id, text, parse_mode=None, disable_web_page_preview=False, disable_notification=False,
                      reply_to_message_id='', reply_markup=''):
