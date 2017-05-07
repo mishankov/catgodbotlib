@@ -1,7 +1,7 @@
 # _*_ coding: utf-8 _*_
 import requests
-from constants import *
-import telegramdatamodel.telegramdatamodel as dm
+from .constants import *
+from .dm import telegramdatamodel as dm
 
 
 class Bot:
